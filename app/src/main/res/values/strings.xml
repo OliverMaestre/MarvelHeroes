@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Marvel Heroes</string>
+
+    <string name="generic_error">Se ha producido un error</string>
+</resources>

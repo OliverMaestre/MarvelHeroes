@@ -1,0 +1,52 @@
+ext {
+
+    globalConfig = [
+            minSdkVersion       : 21,
+            targetVersion       : 30,
+            versionCode         : 1,
+            versionName         : '1.0.0',
+    ]
+
+    key = [
+            publicKey : "\"dab28e13a6732854f8a1c6d6d7e3086e\"",
+            privateKey : "\"1182a04ccd2ce9a238f01a8f7c1550f9fafb0109\""
+    ]
+
+
+    versions = [
+
+            //androidX
+            androidXVersion          : '1.3.0',
+
+            //lifecycle
+            lifecycleVersion         : "2.3.1",
+            extrensions              : "e",
+            architectureVersion      : '1.3.0',
+
+
+            //kotlin
+            kotlinCoreVersion        : '1.5.0',
+
+            //ui
+            materialVersion          : '1.3.0',
+            constraintLayoutVersion  : '2.0.4',
+
+
+            //retrofit
+            retrofitVersion          : '2.9.0',
+
+            //okhttp
+            okhttpVersion            : "4.9.0",
+
+            //koin
+            koinVersion              : '3.0.2',
+
+            //glide
+            glideVersion             : "4.12.0",
+
+            //lottie
+            lottieVersion            : "3.7.0"
+
+
+    ]
+}
