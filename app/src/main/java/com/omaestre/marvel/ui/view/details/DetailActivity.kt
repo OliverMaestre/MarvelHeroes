@@ -50,11 +50,11 @@ class DetailActivity : BaseActivity() {
                 }else ->{
                 binding.loading.visibility = View.GONE
                 binding.error.visibility = View.VISIBLE
-                status.message?.let {
-                    if(it.isNotEmpty())
-                        showSnackBarFailed(it)
-                    else
-                        showSnackBarFailed(getString(R.string.generic_error))}
+                if(status.message!=null && status.message.isNotEmpty()) {
+                    showSnackBarFailed(status.message)
+                }else {
+                    showSnackBarFailed(getString(R.string.generic_error))
+                }
             }
             }
         }

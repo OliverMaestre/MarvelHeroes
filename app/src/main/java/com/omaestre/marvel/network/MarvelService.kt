@@ -5,6 +5,8 @@ import com.omaestre.marvel.base.utils.Constants
 import com.omaestre.marvel.base.utils.Utils
 import com.omaestre.marvel.domain.net.Status
 import com.omaestre.marvel.domain.model.ServiceResponse
+import com.omaestre.marvel.network.interceptor.NetworkInterceptor
+import com.omaestre.marvel.network.interceptor.NoConnectivityException
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -17,16 +19,20 @@ class MarvelService : MarvelServiceInterface{
     private val service : RetrofitServiceInterface by lazy { createService() }
 
     //region override methods
-   override fun getHeroes(): Status<ServiceResponse> {
+    override fun getHeroes(): Status<ServiceResponse> {
 
         val ts = Calendar.getInstance().timeInMillis
-        val hash = Utils.md5(ts.toString()+BuildConfig.PRIVATEKEY+BuildConfig.PUBLICKEY)
+        val hash = Utils.md5(ts.toString() + BuildConfig.PRIVATEKEY + BuildConfig.PUBLICKEY)
 
-        val data = service.getHeroes(BuildConfig.PUBLICKEY,hash,ts).execute()
-        return if (data.isSuccessful && data.body()!=null) {
-            Status.Success(data.body()!!)
-        } else {
-            Status.Error(Throwable(""))
+        return try {
+            val data = service.getHeroes(BuildConfig.PUBLICKEY, hash, ts).execute()
+            if (data.isSuccessful && data.body() != null) {
+                Status.Success(data.body()!!)
+            } else {
+                Status.Error()
+            }
+        } catch (a: NoConnectivityException) {
+            Status.Error()
         }
     }
 
@@ -39,7 +45,7 @@ class MarvelService : MarvelServiceInterface{
         return if (data.isSuccessful && data.body()!=null) {
             Status.Success(data.body()!!)
         } else {
-            Status.Error(Throwable(""))
+            Status.Error()
         }
     }
     //endregion
@@ -55,6 +61,8 @@ class MarvelService : MarvelServiceInterface{
             httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
             builder.addInterceptor(httpLoggingInterceptor)
         }
+
+        builder.addInterceptor(NetworkInterceptor())
 
         val rBuilder = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())

@@ -49,12 +49,12 @@ class MainActivity : BaseActivity(), ClickIntoView {
                         }
                     }
                 }else ->{
-                binding.loading.visibility = View.GONE
-                    status.message?.let {
-                        if(it.isNotEmpty())
-                            showSnackBarFailed(it)
-                        else
-                            showSnackBarFailed(getString(R.string.generic_error))
+                    binding.loading.visibility = View.GONE
+                    binding.error.visibility = View.VISIBLE
+                    if(status.message!=null && status.message.isNotEmpty()) {
+                        showSnackBarFailed(status.message)
+                    }else {
+                        showSnackBarFailed(getString(R.string.generic_error))
                     }
                 }
             }

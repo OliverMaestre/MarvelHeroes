@@ -1,5 +1,6 @@
 package com.omaestre.marvel.network
 
+import com.omaestre.marvel.base.utils.Utils
 import com.omaestre.marvel.domain.net.Status
 import com.omaestre.marvel.injection.retrofitModule
 import com.omaestre.marvel.utils.MockValues
@@ -12,6 +13,8 @@ import org.koin.test.KoinTestRule
 import org.koin.test.inject
 import org.mockito.Mockito
 import java.io.IOException
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class MarvelServiceTest : KoinTest{
@@ -39,6 +42,14 @@ class MarvelServiceTest : KoinTest{
 
         val results = response.data?.data?.results
         assertTrue {results?.isNotEmpty() == true}
+    }
+
+    @Test
+    fun checkNoInternetConnection(){
+        val response = realService.getHeroes()
+        assertNotNull(response)
+        assertNotNull(response.data?.code)
+        assertNotNull(response.data?.data)
     }
 
     @Test

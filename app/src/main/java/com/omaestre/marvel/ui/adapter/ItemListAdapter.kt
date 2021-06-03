@@ -9,7 +9,7 @@ import com.omaestre.marvel.base.extension.loadImage
 import com.omaestre.marvel.databinding.ListItemBinding
 import com.omaestre.marvel.domain.model.Heroe
 
-class ItemAdapter(val clickItem:ClickIntoView) : RecyclerView.Adapter<ItemViewHolder>() {
+class ItemAdapter(private val clickItem:ClickIntoView) : RecyclerView.Adapter<ItemViewHolder>() {
 
     private var listItems : List<Heroe> = emptyList()
 
