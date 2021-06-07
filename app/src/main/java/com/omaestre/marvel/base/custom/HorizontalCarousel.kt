@@ -15,9 +15,9 @@ class HorizontalCarousel(
         newAdapter?.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 post {
-                    val sidePadding = if(getChildAt(0)!=null)
+                    val sidePadding = if (getChildAt(0) != null)
                         (width / 2) - (getChildAt(0).width / 2)
-                    else{
+                    else {
                         (width / 2)
                     }
                     setPadding(sidePadding, 0, sidePadding, 0)
@@ -27,7 +27,6 @@ class HorizontalCarousel(
         })
         adapter = newAdapter
     }
-
 
 
 }

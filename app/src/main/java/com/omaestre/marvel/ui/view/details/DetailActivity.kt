@@ -12,7 +12,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailActivity : BaseActivity() {
 
-    private lateinit var binding : ActivityDetailBinding
+    private lateinit var binding: ActivityDetailBinding
     private val viewModel: DetailViewModel by viewModel()
 
 
@@ -27,10 +27,10 @@ class DetailActivity : BaseActivity() {
     //endregion
 
     //region private methods
-    private fun initComponents(){
+    private fun initComponents() {
 
-        viewModel.liveData.observe(this){ status->
-            when(status){
+        viewModel.liveData.observe(this) { status ->
+            when (status) {
                 is Status.Loading -> {
                     binding.loading.visibility = View.VISIBLE
                 }
@@ -38,7 +38,7 @@ class DetailActivity : BaseActivity() {
                     binding.loading.visibility = View.GONE
                     status.data.let {
                         if (it != null) {
-                            if(it.data.results.isNotEmpty()) {
+                            if (it.data.results.isNotEmpty()) {
                                 val heroe = it.data.results[0]
                                 binding.description.text = heroe.description
                                 binding.name.text = heroe.name
@@ -47,15 +47,16 @@ class DetailActivity : BaseActivity() {
                             }
                         }
                     }
-                }else ->{
-                binding.loading.visibility = View.GONE
-                binding.error.visibility = View.VISIBLE
-                if(status.message!=null && status.message.isNotEmpty()) {
-                    showSnackBarFailed(status.message)
-                }else {
-                    showSnackBarFailed(getString(R.string.generic_error))
                 }
-            }
+                else -> {
+                    binding.loading.visibility = View.GONE
+                    binding.error.visibility = View.VISIBLE
+                    if (status.message != null && status.message.isNotEmpty()) {
+                        showSnackBarFailed(status.message)
+                    } else {
+                        showSnackBarFailed(getString(R.string.generic_error))
+                    }
+                }
             }
         }
         //get bundle

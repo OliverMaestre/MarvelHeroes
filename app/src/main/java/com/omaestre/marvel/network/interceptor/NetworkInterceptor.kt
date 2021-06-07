@@ -8,18 +8,18 @@ import okhttp3.Response
 import java.io.IOException
 
 
-class NetworkInterceptor (): Interceptor {
+class NetworkInterceptor() : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         return if (!Utils.checkInternetConnection(MarvelApplication.getApplicationContext())) {
             throw NoConnectivityException()
-        }else {
-            val builder : Request.Builder = chain. request ().newBuilder()
+        } else {
+            val builder: Request.Builder = chain.request().newBuilder()
             chain.proceed(builder.build())
         }
     }
 }
 
 class NoConnectivityException : IOException() {
-    override val message  = "No connectivity exception"
+    override val message = "No connectivity exception"
 }
