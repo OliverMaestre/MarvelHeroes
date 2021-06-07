@@ -1,78 +1,76 @@
 package com.omaestre.marvel.network
 
 import com.omaestre.marvel.BuildConfig
-import com.omaestre.marvel.base.utils.Constants
 import com.omaestre.marvel.base.utils.Utils
-import com.omaestre.marvel.domain.model.ServiceResponse
+import com.omaestre.marvel.domain.model.ResultData
 import com.omaestre.marvel.domain.net.Status
-import com.omaestre.marvel.network.interceptor.NetworkInterceptor
-import com.omaestre.marvel.network.interceptor.NoConnectivityException
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import okio.IOException
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class MarvelService : MarvelServiceInterface {
+class MarvelService(baseUrl: String) : MarvelServiceInterface {
 
-    private val service: RetrofitServiceInterface by lazy { createService() }
+    private val service: RetrofitServiceInterface by lazy { createService(baseUrl) }
 
     //region override methods
-    override fun getHeroes(): Status<ServiceResponse> {
-
-        val ts = Calendar.getInstance().timeInMillis
-        val hash = Utils.md5(ts.toString() + BuildConfig.PRIVATEKEY + BuildConfig.PUBLICKEY)
-
-        return try {
-            val data = service.getHeroes(BuildConfig.PUBLICKEY, hash, ts).execute()
-            if (data.isSuccessful && data.body() != null) {
-                Status.Success(data.body()!!)
-            } else {
-                Status.Error()
-            }
-        } catch (a: NoConnectivityException) {
-            Status.Error()
-        }
+    override fun getHeroes(): Status<ResultData> {
+        return callService(false, "")
     }
 
-    override fun getHeroeDetail(id: String): Status<ServiceResponse> {
-
-        val ts = Calendar.getInstance().timeInMillis
-        val hash = Utils.md5(ts.toString() + BuildConfig.PRIVATEKEY + BuildConfig.PUBLICKEY)
-
-        val data = service.getHeroeDetail(id, BuildConfig.PUBLICKEY, hash, ts).execute()
-        return if (data.isSuccessful && data.body() != null) {
-            Status.Success(data.body()!!)
-        } else {
-            Status.Error()
-        }
+    override fun getHeroDetail(id: String): Status<ResultData> {
+        return callService(true, id)
     }
     //endregion
 
     //region private methods
-    private fun createService(): RetrofitServiceInterface {
+    private fun createService(baseUrl: String): RetrofitServiceInterface {
         val builder = OkHttpClient.Builder()
         //set time out
         builder.readTimeout(5000, TimeUnit.SECONDS)
-        // Init loggin interceptor
+        // Init logging interceptor
         if (BuildConfig.BUILD_TYPE != "release") {
             val httpLoggingInterceptor = HttpLoggingInterceptor()
             httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
             builder.addInterceptor(httpLoggingInterceptor)
         }
 
-        builder.addInterceptor(NetworkInterceptor())
-
         val rBuilder = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .client(builder.build())
 
         //set baseURL
-        rBuilder.baseUrl(Constants.SERVICEURL)
+        rBuilder.baseUrl(baseUrl)
 
         val retrofit = rBuilder.build()
         return retrofit.create(RetrofitServiceInterface::class.java)
+    }
+
+    private fun callService(isDetail: Boolean, id: String): Status<ResultData> {
+
+        val ts = Calendar.getInstance().timeInMillis
+        val hash = Utils.md5(ts.toString() + BuildConfig.PRIVATEKEY + BuildConfig.PUBLICKEY)
+
+        return try {
+
+            val data = if (isDetail) {
+                service.getHeroDetail(id, BuildConfig.PUBLICKEY, hash, ts).execute()
+            } else {
+                service.getHeroes(BuildConfig.PUBLICKEY, hash, ts).execute()
+            }
+            if (data.isSuccessful && data.body() != null) {
+                Status.Success(data.body()!!)
+            } else {
+                Status.Error()
+            }
+        } catch (a: IOException) {
+            Status.Error()
+        } catch (a: RuntimeException) {
+            Status.Error()
+        }
     }
     //endregion
 }

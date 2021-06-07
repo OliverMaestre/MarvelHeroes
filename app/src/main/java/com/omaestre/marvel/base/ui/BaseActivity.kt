@@ -1,7 +1,5 @@
 package com.omaestre.marvel.base.ui
 
-import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.omaestre.marvel.R

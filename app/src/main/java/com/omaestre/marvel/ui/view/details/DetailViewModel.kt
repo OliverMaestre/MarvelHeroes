@@ -3,24 +3,24 @@ package com.omaestre.marvel.ui.view.details
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.omaestre.marvel.domain.model.ServiceResponse
+import com.omaestre.marvel.domain.model.ResultData
 import com.omaestre.marvel.domain.net.Status
 import com.omaestre.marvel.repository.HeroesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class DetailViewModel (private val heroesRepository : HeroesRepository): ViewModel(){
+class DetailViewModel(private val heroesRepository: HeroesRepository) : ViewModel() {
 
-    var liveData = MutableLiveData<Status<ServiceResponse>>()
+    var liveData = MutableLiveData<Status<ResultData>>()
 
 
     //region public methods
-    fun getHeroeData(id : String){
+    fun getHeroData(id: String) {
         liveData.value = Status.Loading()
 
         viewModelScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO){ heroesRepository.getHeroeDetail(id) }.let {
+            withContext(Dispatchers.IO) { heroesRepository.getHeroDetail(id) }.let {
                 liveData.value = it
             }
         }

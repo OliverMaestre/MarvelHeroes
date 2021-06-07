@@ -5,7 +5,7 @@ import android.view.View
 import com.omaestre.marvel.R
 import com.omaestre.marvel.base.ui.BaseActivity
 import com.omaestre.marvel.databinding.ActivityMainBinding
-import com.omaestre.marvel.domain.model.Heroe
+import com.omaestre.marvel.domain.model.Hero
 import com.omaestre.marvel.domain.net.Status
 import com.omaestre.marvel.ui.adapter.ClickIntoView
 import com.omaestre.marvel.ui.adapter.ItemAdapter
@@ -13,9 +13,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseActivity(), ClickIntoView {
 
-    private lateinit var binding : ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModel()
-    private val listAdapter  = ItemAdapter(this)
+    private val listAdapter = ItemAdapter(this)
 
 
     //region life cycling
@@ -29,13 +29,13 @@ class MainActivity : BaseActivity(), ClickIntoView {
     //endregion
 
     //region private methods
-    private fun initComponents(){
-        with(binding){
+    private fun initComponents() {
+        with(binding) {
             list.initialize(listAdapter)
         }
 
-        viewModel.liveData.observe(this){ status->
-            when(status){
+        viewModel.liveData.observe(this) { status ->
+            when (status) {
                 is Status.Loading -> {
                     binding.loading.visibility = View.VISIBLE
                 }
@@ -43,17 +43,18 @@ class MainActivity : BaseActivity(), ClickIntoView {
                     binding.loading.visibility = View.GONE
                     status.data.let {
                         if (it != null) {
-                            if(it.data.results.isNotEmpty()) {
+                            if (it.data.results.isNotEmpty()) {
                                 listAdapter.updateItems(it.data.results)
                             }
                         }
                     }
-                }else ->{
+                }
+                else -> {
                     binding.loading.visibility = View.GONE
                     binding.error.visibility = View.VISIBLE
-                    if(status.message!=null && status.message.isNotEmpty()) {
+                    if (status.message != null && status.message.isNotEmpty()) {
                         showSnackBarFailed(status.message)
-                    }else {
+                    } else {
                         showSnackBarFailed(getString(R.string.generic_error))
                     }
                 }
@@ -65,8 +66,8 @@ class MainActivity : BaseActivity(), ClickIntoView {
     //endregion
 
     //region ClickIntoView implements
-    override fun itemClicked(item: Heroe) {
-        viewModel.goToDetail(this,item.id.toString())
+    override fun itemClicked(item: Hero) {
+        viewModel.goToDetail(this, item.id.toString())
     }
     //endregion
 }

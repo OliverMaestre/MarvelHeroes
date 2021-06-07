@@ -39,10 +39,10 @@ class DetailActivity : BaseActivity() {
                     status.data.let {
                         if (it != null) {
                             if (it.data.results.isNotEmpty()) {
-                                val heroe = it.data.results[0]
-                                binding.description.text = heroe.description
-                                binding.name.text = heroe.name
-                                binding.imageHeroe.loadImage(heroe.thumbnail.path + "." + heroe.thumbnail.extension)
+                                val hero = it.data.results[0]
+                                binding.description.text = hero.description
+                                binding.name.text = hero.name
+                                binding.imageHeroe.loadImage(hero.thumbnail.path + "." + hero.thumbnail.extension)
 
                             }
                         }
@@ -61,7 +61,7 @@ class DetailActivity : BaseActivity() {
         }
         //get bundle
         val id = intent.extras?.get(Constants.EXTRAID) as String
-        viewModel.getHeroeData(id)
+        viewModel.getHeroData(id)
     }
     //endregion
 }

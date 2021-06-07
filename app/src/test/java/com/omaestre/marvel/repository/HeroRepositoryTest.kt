@@ -8,7 +8,7 @@ import org.hamcrest.MatcherAssert
 import org.junit.Test
 import org.mockito.Mockito
 
-class HeroeRepositoryTest{
+class HeroRepositoryTest{
 
 
     private val heroesRepository : HeroesRepository= Mockito.mock(HeroesRepository::class.java)
@@ -25,10 +25,10 @@ class HeroeRepositoryTest{
     }
 
     @Test
-    fun getHeroeData(): Unit = runBlocking{
-        Mockito.`when`(heroesRepository.getHeroeDetail("0")).thenReturn(status)
-        val info = heroesRepository.getHeroeDetail("0")
-        Mockito.verify(heroesRepository,Mockito.times(1)).getHeroeDetail("0")
+    fun getHeroData(): Unit = runBlocking{
+        Mockito.`when`(heroesRepository.getHeroDetail("0")).thenReturn(status)
+        val info = heroesRepository.getHeroDetail("0")
+        Mockito.verify(heroesRepository,Mockito.times(1)).getHeroDetail("0")
         MatcherAssert.assertThat(status, `is`(info))
     }
 

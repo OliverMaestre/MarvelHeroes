@@ -11,16 +11,27 @@ import com.omaestre.marvel.R
 
 
 val listener = object : RequestListener<Drawable> {
-    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+    override fun onLoadFailed(
+        e: GlideException?,
+        model: Any?,
+        target: Target<Drawable>?,
+        isFirstResource: Boolean
+    ): Boolean {
         return false
     }
 
-    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+    override fun onResourceReady(
+        resource: Drawable?,
+        model: Any?,
+        target: Target<Drawable>?,
+        dataSource: DataSource?,
+        isFirstResource: Boolean
+    ): Boolean {
         return false
     }
 
 }
 
-fun AppCompatImageView.loadImage(url : String){
+fun AppCompatImageView.loadImage(url: String) {
     Glide.with(context).load(url).listener(listener).error(R.drawable.no_image_available).into(this)
 }

@@ -17,8 +17,8 @@ class DetailViewModelTest {
     fun getHeroeData(): Unit = runBlocking{
         val response = MockValues.getServiceResponse()
         val status = Status.Success(response)
-        Mockito.`when`(heroesRepository.getHeroeDetail("2")).thenReturn(status)
-        detailViewModel.getHeroeData("2")
-        Mockito.verify(detailViewModel,Mockito.times(1)).getHeroeData("2")
+        Mockito.`when`(heroesRepository.getHeroDetail("2")).thenReturn(status)
+        detailViewModel.getHeroData("2")
+        Mockito.verify(detailViewModel,Mockito.times(1)).getHeroData("2")
     }
 }

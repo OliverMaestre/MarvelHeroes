@@ -1,55 +1,32 @@
 package com.omaestre.marvel.network
 
-import com.omaestre.marvel.base.utils.Utils
+import com.google.gson.Gson
+import com.omaestre.marvel.domain.model.ResultData
 import com.omaestre.marvel.domain.net.Status
-import com.omaestre.marvel.injection.retrofitModule
 import com.omaestre.marvel.utils.MockValues
 import junit.framework.Assert.assertEquals
+import junit.framework.Assert.assertNotNull
+import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
-import org.koin.test.KoinTest
-import org.koin.test.KoinTestRule
-import org.koin.test.inject
 import org.mockito.Mockito
-import java.io.IOException
-import kotlin.test.assertNotNull
-import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-class MarvelServiceTest : KoinTest{
 
-    private val realService by inject<MarvelService>()
+class MarvelServiceTest{
+
     private lateinit var mockService: MarvelService
+    private lateinit var server : MockWebServer
 
-    @get:Rule
-    val koinTestRule = KoinTestRule.create {
-        printLogger()
-        modules(retrofitModule)
-    }
 
     @Before
     fun setup(){
         mockService = Mockito.mock(MarvelService::class.java)
-    }
-
-    @Throws(IOException::class)
-    @Test
-    fun getHeroesResponse(){
-        val response = realService.getHeroes()
-        assertEquals(response.data?.code, 200)
-        assertEquals(response.data?.status, "Ok")
-
-        val results = response.data?.data?.results
-        assertTrue {results?.isNotEmpty() == true}
-    }
-
-    @Test
-    fun checkNoInternetConnection(){
-        val response = realService.getHeroes()
-        assertNotNull(response)
-        assertNotNull(response.data?.code)
-        assertNotNull(response.data?.data)
+        server = MockWebServer()
+        // Start the server.
+        server.start()
     }
 
     @Test
@@ -60,11 +37,63 @@ class MarvelServiceTest : KoinTest{
 
         val response = mockService.getHeroes()
 
-        assertEquals(response.data?.code, data.code)
-        assertEquals(response.data?.status, data.status)
-
         val results = response.data?.data?.results
         assertTrue {results?.isNotEmpty() == true}
         assertEquals(results?.size , data.data.results.size)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun getHeroesTest() {
+
+        // Schedule some responses.
+        server.enqueue(MockResponse().setResponseCode(200).setBody(MockValues.getMockJson()))
+
+        // Ask the server for its URL.
+        val baseUrl = server.url("/")
+
+        val service = MarvelService(baseUrl.toString())
+        val response = service.getHeroes()
+        assertNotNull(response)
+        assertNotNull(response.data)
+
+
+        // check request
+        val request = server.takeRequest()
+        assertEquals("/v1/public/characters", request.path?.substring(0, request.path!!.indexOf("?")))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun getHeroDetailTest() {
+
+        // Schedule some responses.
+        server.enqueue(MockResponse().setResponseCode(200).setBody(MockValues.getMockJson()))
+
+        // Ask the server for its URL.
+        val baseUrl = server.url("/")
+
+        val service = MarvelService(baseUrl.toString())
+        val serviceResponse = service.getHeroDetail("1011334")
+        assertNotNull(serviceResponse)
+        assertNotNull(serviceResponse.data)
+
+
+        // check request
+        val request = server.takeRequest()
+        assertEquals("/v1/public/characters/1011334", request.path?.substring(0, request.path!!.indexOf("?")))
+
+        //check response
+        val mockServiceResponse = Gson().fromJson(MockValues.getMockJson(), ResultData::class.java) as ResultData
+
+        assertEquals( mockServiceResponse.data.results[0].name,
+            serviceResponse.data?.data?.results?.get(0)?.name
+        )
+    }
+
+
+    @After
+    fun tearDown() {
+        server.shutdown()
     }
 }

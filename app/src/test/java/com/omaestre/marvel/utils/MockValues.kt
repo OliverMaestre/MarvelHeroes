@@ -1,21 +1,29 @@
 package com.omaestre.marvel.utils
 
 import com.omaestre.marvel.domain.model.*
+import okio.buffer
+import okio.source
+import java.nio.charset.StandardCharsets
 
 class MockValues {
 
     companion object{
 
-        fun getServiceResponse() = ServiceResponse(
-            code = 200,
-            status = "ok",
+        fun getMockJson():String{
+            val inputStream = javaClass.classLoader?.getResourceAsStream("response.json")
+            val source = inputStream?.let { inputStream.source().buffer() }
+            return source?.readString(StandardCharsets.UTF_8) ?: ""
+
+        }
+
+        fun getServiceResponse() = ResultData(
             data = getData()
         )
 
-       private fun getHeroe() = Heroe(
+        private fun getHero() = Hero(
             id = 0,
             name = "Iron Man",
-            description = "El superheroe mas grande del mundo",
+            description = "El super heroe mas grande del mundo",
             thumbnail = getThumbNail(),
             comics = getList(),
             series = getList(),
@@ -32,9 +40,9 @@ class MockValues {
             emptyList()
         )
 
-        private fun getHeroesList() : List<Heroe>{
-            val list = ArrayList<Heroe>()
-            list.add(getHeroe())
+        private fun getHeroesList() : List<Hero>{
+            val list = ArrayList<Hero>()
+            list.add(getHero())
             return list
         }
 

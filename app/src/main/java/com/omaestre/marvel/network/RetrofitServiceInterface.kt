@@ -1,6 +1,6 @@
 package com.omaestre.marvel.network
 
-import com.omaestre.marvel.domain.model.ServiceResponse
+import com.omaestre.marvel.domain.model.ResultData
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -13,14 +13,14 @@ interface RetrofitServiceInterface {
         @Query("apikey") key: String,
         @Query("hash") hash: String,
         @Query("ts") ts: Long
-    ): Call<ServiceResponse>
+    ): Call<ResultData>
 
-    @GET("v1/public/characters/{heroeId}")
-    fun getHeroeDetail(
-        @Path("heroeId") heroeId: String,
+    @GET("v1/public/characters/{heroId}")
+    fun getHeroDetail(
+        @Path("heroId") heroId: String,
         @Query("apikey") key: String,
         @Query("hash") hash: String,
         @Query("ts") ts: Long
-    ): Call<ServiceResponse>
+    ): Call<ResultData>
 
 }
