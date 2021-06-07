@@ -10,15 +10,15 @@ import org.mockito.Mockito
 
 class MainViewModelTest {
 
-    private val mainViewModel : MainViewModel = Mockito.mock(MainViewModel::class.java)
-    private val heroesRepository : HeroesRepository = Mockito.mock(HeroesRepository::class.java)
+    private val mainViewModel: MainViewModel = Mockito.mock(MainViewModel::class.java)
+    private val heroesRepository: HeroesRepository = Mockito.mock(HeroesRepository::class.java)
 
     @Test
-    fun getHeroes(): Unit = runBlocking{
+    fun getHeroes(): Unit = runBlocking {
         val response = MockValues.getServiceResponse()
         val status = Status.Success(response)
         Mockito.`when`(heroesRepository.getHeroes()).thenReturn(status)
         mainViewModel.getHeroes()
-        Mockito.verify(mainViewModel,Mockito.times(1)).getHeroes()
+        Mockito.verify(mainViewModel, Mockito.times(1)).getHeroes()
     }
 }

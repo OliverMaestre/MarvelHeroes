@@ -7,9 +7,9 @@ import java.nio.charset.StandardCharsets
 
 class MockValues {
 
-    companion object{
+    companion object {
 
-        fun getMockJson():String{
+        fun getMockJson(): String {
             val inputStream = javaClass.classLoader?.getResourceAsStream("response.json")
             val source = inputStream?.let { inputStream.source().buffer() }
             return source?.readString(StandardCharsets.UTF_8) ?: ""
@@ -40,7 +40,7 @@ class MockValues {
             emptyList()
         )
 
-        private fun getHeroesList() : List<Hero>{
+        private fun getHeroesList(): List<Hero> {
             val list = ArrayList<Hero>()
             list.add(getHero())
             return list
@@ -50,8 +50,6 @@ class MockValues {
             results = getHeroesList()
         )
     }
-
-
 
 
 }

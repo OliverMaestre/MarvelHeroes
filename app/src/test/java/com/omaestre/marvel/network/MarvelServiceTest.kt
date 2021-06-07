@@ -15,14 +15,14 @@ import org.mockito.Mockito
 import kotlin.test.assertTrue
 
 
-class MarvelServiceTest{
+class MarvelServiceTest {
 
     private lateinit var mockService: MarvelService
-    private lateinit var server : MockWebServer
+    private lateinit var server: MockWebServer
 
 
     @Before
-    fun setup(){
+    fun setup() {
         mockService = Mockito.mock(MarvelService::class.java)
         server = MockWebServer()
         // Start the server.
@@ -30,7 +30,7 @@ class MarvelServiceTest{
     }
 
     @Test
-    fun getMockResponse(){
+    fun getMockResponse() {
         val data = MockValues.getServiceResponse()
         val status = Status.Success(data)
         Mockito.`when`(mockService.getHeroes()).thenReturn(status)
@@ -38,8 +38,8 @@ class MarvelServiceTest{
         val response = mockService.getHeroes()
 
         val results = response.data?.data?.results
-        assertTrue {results?.isNotEmpty() == true}
-        assertEquals(results?.size , data.data.results.size)
+        assertTrue { results?.isNotEmpty() == true }
+        assertEquals(results?.size, data.data.results.size)
     }
 
     @Test
@@ -60,7 +60,10 @@ class MarvelServiceTest{
 
         // check request
         val request = server.takeRequest()
-        assertEquals("/v1/public/characters", request.path?.substring(0, request.path!!.indexOf("?")))
+        assertEquals(
+            "/v1/public/characters",
+            request.path?.substring(0, request.path!!.indexOf("?"))
+        )
     }
 
     @Test
@@ -81,12 +84,17 @@ class MarvelServiceTest{
 
         // check request
         val request = server.takeRequest()
-        assertEquals("/v1/public/characters/1011334", request.path?.substring(0, request.path!!.indexOf("?")))
+        assertEquals(
+            "/v1/public/characters/1011334",
+            request.path?.substring(0, request.path!!.indexOf("?"))
+        )
 
         //check response
-        val mockServiceResponse = Gson().fromJson(MockValues.getMockJson(), ResultData::class.java) as ResultData
+        val mockServiceResponse =
+            Gson().fromJson(MockValues.getMockJson(), ResultData::class.java) as ResultData
 
-        assertEquals( mockServiceResponse.data.results[0].name,
+        assertEquals(
+            mockServiceResponse.data.results[0].name,
             serviceResponse.data?.data?.results?.get(0)?.name
         )
     }
