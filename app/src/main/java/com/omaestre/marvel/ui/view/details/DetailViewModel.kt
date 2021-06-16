@@ -6,11 +6,12 @@ import androidx.lifecycle.viewModelScope
 import com.omaestre.marvel.domain.model.ResultData
 import com.omaestre.marvel.domain.net.Status
 import com.omaestre.marvel.repository.HeroesRepository
+import com.omaestre.marvel.repository.RepositoryInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class DetailViewModel(private val heroesRepository: HeroesRepository) : ViewModel() {
+class DetailViewModel(private val heroesRepository: RepositoryInterface) : ViewModel() {
 
     var liveData = MutableLiveData<Status<ResultData>>()
 

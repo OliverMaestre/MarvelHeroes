@@ -9,12 +9,13 @@ import com.omaestre.marvel.base.utils.Constants
 import com.omaestre.marvel.domain.model.ResultData
 import com.omaestre.marvel.domain.net.Status
 import com.omaestre.marvel.repository.HeroesRepository
+import com.omaestre.marvel.repository.RepositoryInterface
 import com.omaestre.marvel.ui.view.details.DetailActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainViewModel(private val heroesRepository: HeroesRepository) : ViewModel() {
+class MainViewModel(private val heroesRepository: RepositoryInterface) : ViewModel() {
 
     var liveData = MutableLiveData<Status<ResultData>>()
 
