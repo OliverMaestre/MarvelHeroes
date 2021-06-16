@@ -2,18 +2,18 @@ package com.omaestre.marvel.ui.view.details
 
 import android.os.Bundle
 import android.view.View
+import com.omaestre.core.base.extension.loadImage
+import com.omaestre.core.base.ui.BaseActivity
+import com.omaestre.core.base.utils.Constants
+import com.omaestre.core.domain.net.Status
 import com.omaestre.marvel.R
-import com.omaestre.marvel.base.extension.loadImage
-import com.omaestre.marvel.base.ui.BaseActivity
-import com.omaestre.marvel.base.utils.Constants
 import com.omaestre.marvel.databinding.ActivityDetailBinding
-import com.omaestre.marvel.domain.net.Status
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailActivity : BaseActivity() {
 
     private lateinit var binding: ActivityDetailBinding
-    private val viewModel: DetailViewModel by viewModel()
+    private val viewModel by viewModel<DetailViewModel>()
 
 
     //region life cycling
@@ -51,10 +51,12 @@ class DetailActivity : BaseActivity() {
                 else -> {
                     binding.loading.visibility = View.GONE
                     binding.error.visibility = View.VISIBLE
-                    if (status.message != null && status.message.isNotEmpty()) {
-                        showSnackBarFailed(status.message)
-                    } else {
-                        showSnackBarFailed(getString(R.string.generic_error))
+                    status.message.let {
+                        if (it != null) {
+                            showSnackBarFailed(it)
+                        }else{
+                            showSnackBarFailed(getString(R.string.generic_error))
+                        }
                     }
                 }
             }

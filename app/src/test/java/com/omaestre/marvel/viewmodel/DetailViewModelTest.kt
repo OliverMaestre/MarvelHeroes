@@ -1,7 +1,7 @@
 package com.omaestre.marvel.viewmodel
 
-import com.omaestre.marvel.domain.net.Status
-import com.omaestre.marvel.repository.HeroesRepository
+import com.omaestre.core.domain.net.Status
+import com.omaestre.core.repository.HeroesRepository
 import com.omaestre.marvel.ui.view.details.DetailViewModel
 import com.omaestre.marvel.utils.MockValues
 import kotlinx.coroutines.runBlocking
@@ -14,7 +14,7 @@ class DetailViewModelTest {
     private val heroesRepository: HeroesRepository = Mockito.mock(HeroesRepository::class.java)
 
     @Test
-    fun getHeroeData(): Unit = runBlocking {
+    fun getHeroData(): Unit = runBlocking {
         val response = MockValues.getServiceResponse()
         val status = Status.Success(response)
         Mockito.`when`(heroesRepository.getHeroDetail("2")).thenReturn(status)

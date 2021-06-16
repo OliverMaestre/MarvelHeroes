@@ -3,10 +3,9 @@ package com.omaestre.marvel.ui.view.details
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.omaestre.marvel.domain.model.ResultData
-import com.omaestre.marvel.domain.net.Status
-import com.omaestre.marvel.repository.HeroesRepository
-import com.omaestre.marvel.repository.RepositoryInterface
+import com.omaestre.core.domain.model.ResultData
+import com.omaestre.core.domain.net.Status
+import com.omaestre.core.repository.RepositoryInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

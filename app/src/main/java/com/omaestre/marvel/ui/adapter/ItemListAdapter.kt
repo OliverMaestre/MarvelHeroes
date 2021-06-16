@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.omaestre.core.base.extension.loadImage
+import com.omaestre.core.domain.model.Hero
 import com.omaestre.marvel.R
-import com.omaestre.marvel.base.extension.loadImage
 import com.omaestre.marvel.databinding.ListItemBinding
-import com.omaestre.marvel.domain.model.Hero
 
 class ItemAdapter(private val clickItem: ClickIntoView) : RecyclerView.Adapter<ItemViewHolder>() {
 

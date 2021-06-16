@@ -4,12 +4,11 @@ import android.content.Intent
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.omaestre.marvel.base.ui.BaseActivity
-import com.omaestre.marvel.base.utils.Constants
-import com.omaestre.marvel.domain.model.ResultData
-import com.omaestre.marvel.domain.net.Status
-import com.omaestre.marvel.repository.HeroesRepository
-import com.omaestre.marvel.repository.RepositoryInterface
+import com.omaestre.core.base.ui.BaseActivity
+import com.omaestre.core.base.utils.Constants
+import com.omaestre.core.domain.model.ResultData
+import com.omaestre.core.domain.net.Status
+import com.omaestre.core.repository.RepositoryInterface
 import com.omaestre.marvel.ui.view.details.DetailActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -2,11 +2,11 @@ package com.omaestre.marvel.ui.view.main
 
 import android.os.Bundle
 import android.view.View
+import com.omaestre.core.base.ui.BaseActivity
+import com.omaestre.core.domain.model.Hero
+import com.omaestre.core.domain.net.Status
 import com.omaestre.marvel.R
-import com.omaestre.marvel.base.ui.BaseActivity
 import com.omaestre.marvel.databinding.ActivityMainBinding
-import com.omaestre.marvel.domain.model.Hero
-import com.omaestre.marvel.domain.net.Status
 import com.omaestre.marvel.ui.adapter.ClickIntoView
 import com.omaestre.marvel.ui.adapter.ItemAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -14,7 +14,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MainActivity : BaseActivity(), ClickIntoView {
 
     private lateinit var binding: ActivityMainBinding
-    private val viewModel: MainViewModel by viewModel()
+    private val viewModel by viewModel<MainViewModel>()
     private val listAdapter = ItemAdapter(this)
 
 
@@ -52,10 +52,12 @@ class MainActivity : BaseActivity(), ClickIntoView {
                 else -> {
                     binding.loading.visibility = View.GONE
                     binding.error.visibility = View.VISIBLE
-                    if (status.message != null && status.message.isNotEmpty()) {
-                        showSnackBarFailed(status.message)
-                    } else {
-                        showSnackBarFailed(getString(R.string.generic_error))
+                    status.message.let {
+                        if (it != null) {
+                            showSnackBarFailed(it)
+                        }else{
+                            showSnackBarFailed(getString(R.string.generic_error))
+                        }
                     }
                 }
             }
