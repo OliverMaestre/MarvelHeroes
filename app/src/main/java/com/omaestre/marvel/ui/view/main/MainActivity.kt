@@ -3,8 +3,8 @@ package com.omaestre.marvel.ui.view.main
 import android.os.Bundle
 import android.view.View
 import com.omaestre.core.base.ui.BaseActivity
-import com.omaestre.core.domain.model.Hero
-import com.omaestre.core.domain.net.Status
+import com.omaestre.data.models.Hero
+import com.omaestre.core.functional.Status
 import com.omaestre.marvel.R
 import com.omaestre.marvel.databinding.ActivityMainBinding
 import com.omaestre.marvel.ui.adapter.ClickIntoView
@@ -68,7 +68,7 @@ class MainActivity : BaseActivity(), ClickIntoView {
     //endregion
 
     //region ClickIntoView implements
-    override fun itemClicked(item: Hero) {
+    override fun itemClicked(item: com.omaestre.data.models.Hero) {
         viewModel.goToDetail(this, item.id.toString())
     }
     //endregion

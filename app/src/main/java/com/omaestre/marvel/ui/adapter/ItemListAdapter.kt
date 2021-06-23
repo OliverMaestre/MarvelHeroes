@@ -5,13 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.omaestre.core.base.extension.loadImage
-import com.omaestre.core.domain.model.Hero
+import com.omaestre.data.models.Hero
 import com.omaestre.marvel.R
 import com.omaestre.marvel.databinding.ListItemBinding
 
 class ItemAdapter(private val clickItem: ClickIntoView) : RecyclerView.Adapter<ItemViewHolder>() {
 
-    private var listItems: List<Hero> = emptyList()
+    private var listItems: List<com.omaestre.data.models.Hero> = emptyList()
 
     //region override methods
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder =
@@ -28,7 +28,7 @@ class ItemAdapter(private val clickItem: ClickIntoView) : RecyclerView.Adapter<I
     //endregion
 
     //region public methods
-    fun updateItems(items: List<Hero>) {
+    fun updateItems(items: List<com.omaestre.data.models.Hero>) {
         listItems = items
         notifyDataSetChanged()
     }
@@ -36,14 +36,14 @@ class ItemAdapter(private val clickItem: ClickIntoView) : RecyclerView.Adapter<I
 }
 
 interface ClickIntoView {
-    fun itemClicked(item: Hero)
+    fun itemClicked(item: com.omaestre.data.models.Hero)
 }
 
 class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     private val binding = ListItemBinding.bind(view)
 
-    fun bind(item: Hero, listener: ClickIntoView) {
+    fun bind(item: com.omaestre.data.models.Hero, listener: ClickIntoView) {
         with(binding) {
             itemName.text = item.name
             itemImage.loadImage(item.thumbnail.path + "." + item.thumbnail.extension)

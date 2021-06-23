@@ -1,9 +1,19 @@
-package com.omaestre.marvel.utils
+package com.omaestre.data.utils
+
+import okio.buffer
+import okio.source
+import java.nio.charset.StandardCharsets
 
 class MockValues {
 
     companion object {
 
+        fun getMockJson(): String {
+            val inputStream = this::class.java.classLoader?.getResourceAsStream("response.json")
+            val source = inputStream?.let { inputStream.source().buffer() }
+            return source?.readString(StandardCharsets.UTF_8) ?: ""
+
+        }
 
         fun getServiceResponse() = com.omaestre.data.models.ResultData(
             data = getData()

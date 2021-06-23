@@ -5,7 +5,7 @@ import android.view.View
 import com.omaestre.core.base.extension.loadImage
 import com.omaestre.core.base.ui.BaseActivity
 import com.omaestre.core.base.utils.Constants
-import com.omaestre.core.domain.net.Status
+import com.omaestre.core.functional.Status
 import com.omaestre.marvel.R
 import com.omaestre.marvel.databinding.ActivityDetailBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
